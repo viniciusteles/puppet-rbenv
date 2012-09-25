@@ -14,6 +14,7 @@ define rbenv::bundle(
     group     => $group,
     path      => "${home}/.rbenv/bin:${home}/.rbenv/shims:/bin:/usr/bin",
     creates   => "${path}/Gemfile.lock",
+    timeout   => 0,
     logoutput => true,
   }
 }
