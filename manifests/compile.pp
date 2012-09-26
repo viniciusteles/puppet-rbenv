@@ -48,6 +48,7 @@ define rbenv::compile(
       group  => $group,
       home   => $home,
       root   => $root
+      require => Anchor['rbenv::begin'],
     }
   }
 
@@ -80,26 +81,30 @@ define rbenv::compile(
     before      => Exec["rbenv::rehash ${user} ${ruby}"],
   }
 
-  exec { "rbenv::rehash ${user} ${ruby}":
-    command     => "rbenv rehash && rm -f ${root_path}/.rehash",
-    user        => $user,
-    group       => $group,
-    cwd         => $home_path,
-    onlyif      => "[ -e '${root_path}/.rehash' ]",
-    environment => [ "HOME=${home_path}" ],
-    path        => $path,
-    logoutput   => 'on_failure',
+  if ! defined( Exec["rbenv::rehash ${user} ${ruby}"] ) {
+    exec { "rbenv::rehash ${user} ${ruby}":
+      command     => "rbenv rehash; rm -f ${root_path}/.rehash",
+      user        => $user,
+      group       => $group,
+      cwd         => $home_path,
+      onlyif      => "[ -e '${root_path}/.rehash' ]",
+      environment => [ "HOME=${home_path}" ],
+      path        => $path,
+      logoutput   => 'on_failure',
+      require     => Anchor['rbenv::begin'],
+    }
   }
 
   # Install bundler
   #
-  rbenv::gem {"rbenv::bundler ${user} ${ruby}":
-    ensure => $bundler,
-    user   => $user,
-    ruby   => $ruby,
-    gem    => 'bundler',
-    home   => $home_path,
-    root   => $root_path,
+  gem {"rbenv::bundler ${user} ${ruby}":
+    ensure  => present,
+    gem     => 'bundler',
+    user    => $user,
+    ruby    => $ruby,
+    home    => $home_path,
+    root    => $root_path,
+    require => Anchor['rbenv::begin'],
   }
 
   # Set default global ruby version for rbenv, if requested
@@ -110,7 +115,7 @@ define rbenv::compile(
       content => "${ruby}\n",
       owner   => $user,
       group   => $group,
-      require => Exec["rbenv::compile ${user} ${ruby}"]
+      require => Anchor['rbenv::begin'],
     }
   }
 }

@@ -12,5 +12,6 @@ define rbenv::plugin::rbenvvars(
     group       => $group,
     home        => $home,
     root        => $root
+    require     => Anchor['rbenv::begin'],
   }
 }
