@@ -35,7 +35,7 @@ define rbenv::compile(
       user   => $user,
       group  => $group,
       home   => $home,
-      root   => $root
+      root   => $root,
       require => Anchor['rbenv::begin'],
     }
   }
