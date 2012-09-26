@@ -11,7 +11,7 @@ define rbenv::plugin::rubybuild(
     plugin_name => 'ruby-build',
     group       => $group,
     home        => $home,
-    root        => $root
+    root        => $root,
     require     => Anchor['rbenv::begin'],
   }
 }

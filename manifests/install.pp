@@ -57,7 +57,7 @@ define rbenv::install(
   }
 
   anchor { "rbenv::begin":
-    require => Class['rbenv-dependencies'],
+    require => Class['rbenv::dependencies'],
   }
 
   anchor { "rbenv::end": }
