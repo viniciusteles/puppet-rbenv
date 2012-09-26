@@ -23,8 +23,9 @@ define rbenv::install(
     creates => $root_path,
     path    => ['/usr/bin', '/usr/sbin'],
     timeout => 100,
-    cwd => $home_path,
+    cwd     => $home_path,
     require => Package['git'],
+    before  => Anchor['rbenv::end'],
   }
 
   file { "rbenv::rbenvrc ${user}":
@@ -33,6 +34,7 @@ define rbenv::install(
     group   => $group,
     content => template('rbenv/dot.rbenvrc.erb'),
     require => Exec["rbenv::checkout ${user}"],
+    before  => Anchor['rbenv::end'],
   }
 
   exec { "rbenv::bashrc ${user}":
@@ -42,5 +44,12 @@ define rbenv::install(
     unless  => "grep -q rbenvrc ${bashrc}",
     path    => ['/bin', '/usr/bin', '/usr/sbin'],
     require => File["rbenv::rbenvrc ${user}"],
+    before  => Anchor['rbenv::end'],
   }
+
+  anchor { "rbenv::begin":
+    require => Class['rbenv-dependencies'],
+  }
+
+  anchor { "rbenv::end": }
 }

@@ -23,5 +23,6 @@ define rbenv::bundle(
     creates   => "${path}/Gemfile.lock",
     timeout   => 0,
     logoutput => true,
+    require   => Anchor['rbenv::begin'],
   }
 }
