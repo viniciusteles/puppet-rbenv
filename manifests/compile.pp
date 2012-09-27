@@ -48,7 +48,6 @@ define rbenv::compile(
       group  => $group,
       home   => $home,
       root   => $root,
-      require => Anchor['rbenv::begin'],
     }
   }
 
@@ -104,7 +103,6 @@ define rbenv::compile(
     ruby    => $ruby,
     home    => $home_path,
     root    => $root_path,
-    require => Anchor['rbenv::begin'],
   }
 
   # Set default global ruby version for rbenv, if requested
@@ -115,7 +113,6 @@ define rbenv::compile(
       content => "${ruby}\n",
       owner   => $user,
       group   => $group,
-      require => Anchor['rbenv::begin'],
     }
   }
 }
