@@ -20,7 +20,7 @@ define rbenv::bundle(
                    '/sbin',
                    '/bin'
                   ],
-    creates   => "${path}/Gemfile.lock",
+    creates   => "${path}/.bundle",
     timeout   => 0,
     logoutput => true,
   }
