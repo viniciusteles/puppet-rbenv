@@ -7,7 +7,7 @@ define rbenv::bundle(
   $gems    = ''
 ) {
 
-  exec {"${user} bundle":
+  exec { "${user}/${path}/bundle":
     command   => "rbenv exec bundle --path=${path}/.bundle",
     cwd       => $path,
     user      => $user,
