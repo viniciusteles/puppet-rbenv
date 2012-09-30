@@ -2,10 +2,10 @@ define rbenv::bundle(
   $home,
   $user,
   $path,
-  $group   = $user,
+  $group = $user,
 ) {
 
-  exec {"${user} bundle":
+  exec { "${user}/${path}/bundle":
     command   => "rbenv exec bundle --path=${path}/.bundle",
     cwd       => $path,
     user      => $user,
