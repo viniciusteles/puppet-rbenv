@@ -53,9 +53,13 @@ define rbenv::install(
     require => Exec["rbenv::checkout ${user}"]
   }
 
-  anchor { "rbenv::begin":
-    require => Class['rbenv::dependencies'],
+  if ! defined( Anchor['rbenv::begin'] ) {
+    anchor { "rbenv::begin":
+      require => Class['rbenv::dependencies'],
+    }
   }
 
-  anchor { "rbenv::end": }
+  if ! defined( Anchor['rbenv::end'] ) {
+    anchor { "rbenv::end": }
+  }
 }
